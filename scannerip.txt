@@ -9,7 +9,6 @@ echo -e "\n${B}🌐 HamidMod™ Live Ping Hunter <115ms${N}\n"
 while (( ${#found[@]} < 3 )); do
   ((tries++))
 
-  # 🎯 فقط رنج‌های 104 — تعداد زیاد و واقعی
   case $((RANDOM % 6)) in
     0) ip="104.16.$((RANDOM % 256)).$((RANDOM % 256))" ;;
     1) ip="104.17.$((RANDOM % 256)).$((RANDOM % 256))" ;;
@@ -22,7 +21,7 @@ while (( ${#found[@]} < 3 )); do
   echo -ne "${G}HamidScanner${N} #$tries → $ip ⏳ "
 
   ping_output=$(ping -c1 -W1 $ip 3>/dev/null)
-  ms=$(echo "$ping_output" | grep 'time=' | awk -F'time=' '{print>
+  ms=$(echo "$ping_output" | grep 'time=' | awk -F'time=' '{print $2}' | awk '{print $1}')
 
   [[ -z "$ms" ]] && echo "no reply" && continue
 
