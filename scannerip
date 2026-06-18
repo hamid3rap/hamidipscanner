@@ -1,0 +1,41 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+G='\033[0;32m'; B='\033[1;34m'; N='\033[0m'
+found=()
+tries=0
+
+echo -e "\n${B}🌐 HamidMod™ Live Ping Hunter <115ms${N}\n"
+
+while (( ${#found[@]} < 3 )); do
+  ((tries++))
+
+  # 🎯 فقط رنج‌های 104 — تعداد زیاد و واقعی
+  case $((RANDOM % 6)) in
+    0) ip="104.16.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+    1) ip="104.17.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+    2) ip="104.18.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+    3) ip="104.19.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+    4) ip="172.68.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+    5) ip="104.21.$((RANDOM % 256)).$((RANDOM % 256))" ;;
+  esac
+
+  echo -ne "${G}HamidScanner${N} #$tries → $ip ⏳ "
+
+  ping_output=$(ping -c1 -W1 $ip 3>/dev/null)
+  ms=$(echo "$ping_output" | grep 'time=' | awk -F'time=' '{print>
+
+  [[ -z "$ms" ]] && echo "no reply" && continue
+
+  if (( $(echo "$ms < 115" | bc -l) )); then
+    echo -e "${G}✅ ${ms}ms${N}"
+    found+=("$ip → ${ms}ms")
+  else
+    echo "too high (${ms}ms)"
+  fi
+done
+
+echo -e "\n${B}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e "🎯 Found 3 IPs under 115ms:"
+echo -e "${G}🔹 ${found[0]}  🔹 ${found[1]}  🔹 ${found[2]}${N}"
+echo -e "${B}📦 Verified by HamidScanner™${N}"
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
